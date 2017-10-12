@@ -1,0 +1,20 @@
+* Docstrings
+
+- Special type of strings delineated by three double quotes at start and end
+- Allows linebreaks within strings
+- Picked up by built in help facility if they immediately follow the definition of a function
+
+* String formatting
+
+** Dumb way
+
+- Use str(variable_identifier) to stringify something
+- Then use print('some text ' + str(variable) + ' more text.')
+
+** Better: string formatting
+
+- There are two styles
+- Old-style uses C format codes, e.g. print('%s is awesome!'%('Python'))
+- New style uses {}, e.g. print('{} is awesome!'.format('Python'))
+- Can use format codes beginning with colons, e.g. {:d} is integer, {:.2f} is 2dp float
+- Can also use named parameters e.g. print('{lang:s} is awesome!'.format(lang='Python'))
