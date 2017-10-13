@@ -32,3 +32,58 @@
 - Also, ~True - 1 == False~ and ~False - 1 == -1~
 - But ~0 is False == False~ - ~is~ tests for /exact/ equivalence
 - ~if x~ tests for any nonzero value, i.e. it is different from ~if x == True~
+
+* Collections
+
+- Python collections can have different types
+- Best to avoid though - makes iteration prone to disaster!
+- ~in~ can be used to test if a collection contains an item
+- Collections can be iterated over e.g. ~for x in [1,2,3,4]~
+
+** Lists
+
+- Lists are ordered collections, designated by square-bracketed comma list of values
+- Get length with ~len(list_variable)~
+- Slices can be used to get subsections of lists, e.g. ~list_variable[start:stop:step]~
+- Start is first index to return, stop is index *after the last* to return
+- Parameters are *optional* - 0, past-the-last, and 1 respectively are assumed
+- Negative numbers are used to count backward from the end of the list, with -1 being the *last* element
+- Negative ~step~ reverses order, but better to use ~list.reverse()~
+- Adding lists concatenates them, but /returns a new list object/
+- To concatenate a list in place, use ~list.append()~
+- This appends /exactly/ what is supplied, so appending ~[1, 2]~ will give ~[rest of list [1, 2]]~ !
+- To do the 'obvious' thing use ~list.extend()~
+
+** Tuples
+
+- Tuples are immutable lists, designated by parenthesised comma list of values
+- Often used to return multiple values from a function - *packing*
+- Reverse is *unpacking* - multiple assignment e.g. x, y, z = (1, 2, 3)
+
+** Dictionaries
+
+- Dictionaries are associative arrays/maps
+- Can create using ~dict()~ function or curly brackets ~{key : value}~
+- Useful methods: ~keys()~, ~values()~, ~items()~
+- Can use for POD types (instead of C structs)
+
+** Better iteration
+
+*** Ranges
+
+- Special objects useful for iteration with a start point, end point, and step size
+- Better than explicit lists for use as a loop counter
+
+*** Comprehensions
+
+- *List comprehensions* allow for loop inside list creation syntax
+- E.g. ~[i**2 for i in range(0, 10)]~ = [0, 1, 4, 9, 25, 36, 49, 64, 81]
+
+*** Enumeration
+
+- To loop over an iterable /and/ keep track of an index, use ~enumerate()~
+- Equivalently, and more generally, ~zip()~ can be used to loop over more than one iterable
+
+*** Generators
+
+- *Generators* are iterators that generate values lazily/on the fly
