@@ -1,0 +1,54 @@
+# read data in from file
+# distribute counts according to Gaussian distribution
+# calculate no. of counts
+# create image
+# add to plot
+
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.colors as colors
+
+# number of pixels in CCD image
+NX = 100
+NY = 100
+
+def ccd(filename):
+    record = np.dtype([('name', 'S4'),
+                      ('x', np.float64),
+                      ('y', np.float64),
+                      ('counts', np.float64),
+                      ('sigma', np.int8)])
+    data = np.loadtxt(filename,dtype=record)
+    samples = np.empty((0,2))
+    #np.random.seed(42)
+    
+    # Samples corresponding to stars
+    for star in data:     
+        samples = np.concatenate((samples, spread(star)))
+
+    # Noise field
+    noise = np.random.poisson(10.0, (NX, NY))
+
+    # Bin star samples and add noise field
+    hist, xedges, yedges = np.histogram2d(samples[:,1], samples[:,0], (NX, NY))
+    hist += noise
+    
+    fig = plt.figure()
+    img = plt.imshow(hist, cmap=plt.cm.viridis, norm=colors.LogNorm(), origin='lower')
+    plt.show()
+
+def spread(star):
+    name, x, y, counts, sigma = star
+    print(x, y, counts, sigma)
+    return np.random.multivariate_normal((x, y),
+                                         ((sigma,0),(0,sigma)),
+                                         int(counts))
+    
+                      
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('filename',type=str)
+    args = parser.parse_args()
+
+    ccd(args.filename)
