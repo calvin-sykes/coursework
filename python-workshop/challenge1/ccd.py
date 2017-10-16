@@ -32,7 +32,7 @@ def ccd(infile):
     noise = np.random.poisson(10.0, (NX, NY))
 
     # Bin star samples and add noise field
-    hist, xedges, yedges = np.histogram2d(ysam.flatten(), xsam.flatten(), (NX, NY))
+    hist, xedges, yedges = np.histogram2d(ysam.flatten(), xsam.flatten(), (NY, NX))
     hist += noise
 
     # Make plot
