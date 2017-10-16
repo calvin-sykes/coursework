@@ -7,12 +7,15 @@ from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.coordinates import SphericalDifferential
 
+import matplotlib.pyplot as plt
+
 # given RA, dec, distance from Sun D, proper motions in RA and dec
 
 # 1) Convert to 6D cartesian coordinates
 # - Convert from RA, dec to galactic coordinates
 # - Convert to heliocentric Cartesian coordinates
 # - Move origin to get galactocentric coordinates
+# STONE THE CROWS astropy can do this in one line!
 # This sorts positions, how to get velocities?
 
 def stars(infile):
@@ -32,7 +35,14 @@ def stars(infile):
     # astropy.SkyCoords doesn't support doing the velocity components though
     # so we need to do these manually
 
-    print(data_gcen)
+    # plot positions
+    from matplotlib import rc
+    rc('text', usetex=True)
+    fig = plt.figure()
+    ax = plt.gca()
+    ax.set_aspect('equal')
+    plt.scatter(data_gcen.x,data_gcen.y) 
+    plt.show()
 
 def to_gcen(data):
     return SkyCoord(ra=data['ra'] * u.degree,
