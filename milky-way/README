@@ -1,0 +1,20 @@
+Milky Way Galaxy Homework
+=========================
+
+Included in this zip file are:
+
+data.txt - for convenience, the provided input data.
+stars.py - a Python program implementing the first two assignments.
+           To run it you need python3, matplotlib, numpy and astropy.
+	   The data file must be specified via command line argument:
+
+           ./stars.py --filename data.txt
+
+           The program will write the 6D coordinates to  the file '6d.txt'
+	   and print the calculated velocity dispersions, v_rot and beta.
+	   The optional argument --plots can be supplied to also produce
+	   some histograms of the positions and velocities of the stars.
+  6d.txt - the output data produced by the program.
+written-answers.txt - a text file containing answers to the written assignments.
+
+Calvin Sykes

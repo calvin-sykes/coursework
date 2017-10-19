@@ -1,0 +1,29 @@
+Milky Way Galaxy Homework - Written Answers
+===========================================
+
+- How would you find these parameters if only 4D coordinates were given: ra, dec, D, v_los?
+
+Because the Sun's velocity in the galactocentric frame contains components in the x, y,
+and z directions, measurements of the radial velocity v_los provide sufficient information
+to obtain 6D phase space coordinates. However, the solar motion becomes increasingly negligible
+at larger galactocentric radii, meaning that this method becomes increasingly inaccurate.
+
+- Now use the file data_err.txt, which includes errors of 0.5 mas/yr in the proper motion
+  coordinates. How would you find the velocity anisotropy and net rotation in this case?
+
+The effect of errors in the proper motions will be to introduce additional Gaussian terms in the
+reconstructed velocity distribution function (assuming random errors). Transforming to galacto-
+centric coordinates will result in these terms being spread over all three velocity components.
+Therefore, a fit of the distribution function would need to be performed including the error terms
+to determine the underlying velocity dispersions.
+
+- What does the net rotation and velocity anisotropy of halo stars tell us about the formation
+  of the Milky Way halo?
+
+These parameters may be used as a probe of the formation history of the Milky Way. For example,
+a velocity anistropy close to 0 would suggest a relatively large number of mergers, whereas a
+significant anistropy and/or net rotation would suggest the merger history is dominated by a
+single larger merger. This merger is also likely to have occured relatively recently, since over
+sufficiently long timescales perturbations to stars' motions will decrease the degree of isotropy.
+
+Calvin Sykes
