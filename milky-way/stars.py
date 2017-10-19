@@ -46,16 +46,16 @@ def stars(in_file, plots_flag):
                 dec=data['dec'] * u.degree,
                 distance=data['d'] * u.kpc,
                 pm_ra_cosdec=(data['pmra'] * u.mas / u.yr
-                              * np.cos(np.radians(data['dec'] * u.degree))),
+                              * np.cos(data['dec'] * u.degree)),
                 pm_dec=data['pmdec'] * u.mas / u.yr,
                 radial_velocity=data['vlos'] * u.km / u.s)
     
     # Cartesian galactocentric coordinates
-    v_sun = CartesianDifferential(11.1, 12.24 + 238, 7.25, unit=u.km / u.s)
+    v_sun = CartesianDifferential(11.1, 12.248 + 238, 7.25, unit=u.km / u.s)
     gal_cen = icrs.transform_to(Galactocentric(galcen_v_sun=v_sun,
                                                galcen_distance=8.0 * u.kpc,
                                                z_sun=0 * u.kpc))
-
+    
     # Output the 6D Cartesian coordinates
     out_file = '6d.txt'
     out_data = np.column_stack((gal_cen.x,
@@ -67,22 +67,25 @@ def stars(in_file, plots_flag):
     cols = ('x[kpc]', 'y[kpc]', 'z[kpc]', 'v_x[km/s]', 'v_y[km/s]', 'v_z[km/s]')
     np.savetxt(out_file, out_data, fmt='%9.4f', header=' '.join(cols))
     print('6D coordinates written to {}'.format(out_file))
-
+    
+    # r = distance
+    # theta = latitude
+    # phi = azimuth/longitude
+    # NB This is opposite to how spherical coordinates are normally defined!
+    
     # Spherical galactocentric coordinates
-    gal_cen_sph = gal_cen.spherical
-    gal_cen_sph_v = gal_cen.spherical.differentials['s']
+    gal_cen_sph = gal_cen.copy()
+    gal_cen_sph.representation = 'spherical'
     
-    # Alternative way of getting spherical coordinates
-    #test = gal_cen.copy()
-    #test.representation = 'spherical'
-
     # Calculate spherical velocity components and make units sensible
-    # For angular components, multiply by distance to get tangential velocities
-    vr = gal_cen_sph_v.d_distance.to(u.km/u.s)
-    vtheta = (gal_cen_sph_v.d_lat * gal_cen_sph.distance).to(u.rad * u.km/u.s) / u.rad
-    vphi = (gal_cen_sph_v.d_lon * gal_cen_sph.distance).to(u.rad * u.km/u.s) / u.rad
+    vr = (gal_cen_sph.d_distance
+          .to(u.km/u.s))
+    vtheta = ((gal_cen_sph.d_lat * gal_cen_sph.distance)
+              .to(u.rad * u.km/u.s) / u.rad)
+    vphi = ((gal_cen_sph.d_lon * gal_cen_sph.distance * np.cos(gal_cen_sph.lat))
+            .to(u.rad * u.km/u.s) / u.rad)
     
-    # Calculate sigmasstandard deviations (sigma) for three velocity components
+    # Calculate standard deviations (sigma) for three velocity components
     vr_dev = np.std(vr)
     vtheta_dev = np.std(vtheta)
     vphi_dev = np.std(vphi)
@@ -91,18 +94,22 @@ def stars(in_file, plots_flag):
     v_anis = vel_anisotropy(vr, vtheta, vphi)
 
     # Calculate the rotation velocity
-    # TODO
+    # Assumed that this is the expectation value of vphi
+    v_rot = np.mean(vphi)
     
     # Report the results
     print('Velocity dispersion and anisotropy results:') 
-    print('      sigma_r={}\n  sigma_theta={}\n    sigma_phi={}\n         beta={}'
-          .format(vr_dev, vtheta_dev, vphi_dev, v_anis))
+    print("""    sigma_r = {}
+    sigma_theta = {}
+    sigma_phi = {}
+    v_rot = {}
+    beta = {}""".format(vr_dev, vtheta_dev, vphi_dev, v_rot, v_anis))
 
     # Spit out some plots if the command line flag was given
     if plots_flag:
-        # plot positions
         #from matplotlib import rc
         #rc('text', usetex=True)
+        # plot positions
         fig = plt.figure()
         ax = plt.gca()
         ax.set_title('XY positions scatterplot')
@@ -139,6 +146,18 @@ def stars(in_file, plots_flag):
         plt.hist(np.array(vr), bins=50, range=(-1000,1000),alpha=0.4,label='vr')
         plt.hist(np.array(vtheta), bins=50, range=(-1000,1000), alpha=0.4,label='vtheta')
         plt.hist(np.array(vphi), bins=50, range=(-1000,1000),alpha=0.4,label='vphi')
+        #plt.hist(np.array(vtheta), bins=50, alpha=0.4,label='vtheta')
+        #plt.hist(np.array(vphi), bins=50, alpha=0.4,label='vphi')
+        plt.legend()
+
+        cart_vel_fig = plt.figure()
+        ax = plt.gca()
+        ax.set_title('Histogram of Cartesian velocity components')
+        ax.set_xlabel('Velocity [km/s]')
+        ax.set_ylabel('Count')
+        plt.hist(np.array(gal_cen.v_x), bins=50, range=(-1000,1000),alpha=0.4,label='vx')
+        plt.hist(np.array(gal_cen.v_y), bins=50, range=(-1000,1000), alpha=0.4,label='vy')
+        plt.hist(np.array(gal_cen.v_z), bins=50, range=(-1000,1000),alpha=0.4,label='vz')
         #plt.hist(np.array(vtheta), bins=50, alpha=0.4,label='vtheta')
         #plt.hist(np.array(vphi), bins=50, alpha=0.4,label='vphi')
         plt.legend()
