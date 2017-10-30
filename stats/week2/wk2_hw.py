@@ -181,8 +181,8 @@ Intercept minimising chi^2: {:.0f} mV"""
             
     plt.figure()
     ax = plt.gca()
-    ax.set_xlabel('Gradient $m$')
-    ax.set_ylabel('Intercept $c$')
+    ax.set_xlabel('Gradient $m$ (V/Hz)')
+    ax.set_ylabel('Intercept $c$ (V)')
     ax.set_title('$\Delta\chi^2$ minimisation for fitting $y=mx+c$ to data')
     plt.contourf(ms, cs, chisqs, range(0,11,1))
     plt.plot(m_res[:,0], m_res[:,1], label='Gradient error calculation')
