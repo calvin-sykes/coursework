@@ -45,8 +45,8 @@ def stars(in_file, plots_flag):
     icrs = ICRS(ra=data['ra'] * u.degree,
                 dec=data['dec'] * u.degree,
                 distance=data['d'] * u.kpc,
-                pm_ra_cosdec=(data['pmra'] * u.mas / u.yr
-                              * np.cos(data['dec'] * u.degree)),
+                pm_ra_cosdec=(data['pmra'] * u.mas / u.yr),
+                              #* np.cos(data['dec'] * u.degree)),
                 pm_dec=data['pmdec'] * u.mas / u.yr,
                 radial_velocity=data['vlos'] * u.km / u.s)
     
