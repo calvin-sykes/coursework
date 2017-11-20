@@ -1,0 +1,135 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{parskip}
+
+\makeatletter
+\newcommand{\pushright}[1]{\ifmeasuring@#1\else\omit\hfill$\displaystyle#1$\fi\ignorespaces}
+\newcommand{\pushleft}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\hfill\fi\ignorespaces}
+\makeatother
+
+\newcommand*{\QED}{\pushright{\ensuremath{\square}}}%
+
+\title{Stellar Dynamics Coursework}
+\date{\today}
+\author{Calvin Sykes}
+
+\begin{document}
+
+\maketitle
+
+{\Large{\bfseries Question 3}\normalsize}
+
+The distribution function is:
+\begin{equation}
+  f=
+  \begin{cases}
+    C\left(\frac{A}{r}-\frac{v^2}{2}\right)&\mbox{for } v<\sqrt{\frac{2A}{r}}\\
+    0 &\mbox{for } v>\sqrt{\frac{2A}{r}}
+  \end{cases}
+\end{equation}
+
+\begin{enumerate}[label=(\alph*)]
+\item\underline{What is the number density profile of the test particles, $n(r)$?}
+\end{enumerate}
+
+\begin{align}
+  n(r)&=\int f(x,v)\,\mathrm{d}^3\mathbf{v}\\
+  \intertext{Change of coordinates: $\mathrm{d}^3\mathbf{v}=v^2\sin^2(v_\theta)\,\mathrm{d}v\mathrm{d}v_\theta\mathrm{d}v_\phi$.}
+  \Rightarrow n(r)&=\int\,\mathrm{d}v_\theta\mathrm{d}v_\phi\int C\left(\frac{A}{r}-\frac{v^2}{2}\right)\,\mathrm{d}v\\
+                  &=4\pi C\int_0^{\sqrt{\frac{2A}{r}}}\frac{Av^2}{r}-\frac{v^4}{2}\,\mathrm{d}v\\
+                  &=4\pi C\left[\frac{Av^3}{3r}-\frac{v^5}{10}\right]_0^{\sqrt{\frac{2A}{r}}}\\
+                  &=4\pi C\left[\frac{2^{3/2}}{3}\left(\frac{A}{r}\right)^{5/2}-\frac{2^{3/2}}{5}\left(\frac{A}{r}\right)^{5/2}\right]\\
+                  &=\frac{16\pi C\sqrt{2}}{15}\left(\frac{A}{r}\right)^{5/2}
+\end{align}
+\begin{enumerate}[resume, label=(\alph*)]
+\item\underline{Is the velocity dispersion tensor of the test particles isotropic?}
+\end{enumerate}
+
+The distribution function is isotropic and so $u_i=\langle v_i \rangle$ has the same value for $i=r,\theta,\phi$. Hence the velocity dispersion tensor  will also be isotropic.
+
+\begin{enumerate}[resume, label=(\alph*)]
+\item\underline{If this distribution function is a solution to the CBE what is the gravitational potential?}
+\end{enumerate}
+
+\begin{align}
+  \intertext{Solves CBE if $\frac{\mathrm{d}f}{\mathrm{d}t}=0$.}
+  0=\frac{\mathrm{d}f}{\mathrm{d}t}&=C\left[\frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{A}{r}\right)-\frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{v^2}{2}\right)\right]\\
+                                 &=C\left[-\frac{A}{r^2}\frac{\mathrm{d}r}{\mathrm{d}t}-v\frac{\mathrm{d}v}{\mathrm{d}t}\right]\\
+                                 &=C\left[-\frac{Av}{r^2} - va\right]\\
+  \Rightarrow \frac{A}{r^2}&=a\\
+  \shortintertext{Since $a=-\nabla\phi$:}
+  \phi&=\int\frac{A}{r^2}\,\mathrm{d}r\\
+  &=-\frac{A}{r}
+\end{align}
+
+{\Large{\bfseries Question 5}\normalsize}
+
+Plummer density profile is:
+\begin{equation}
+  \rho(r)=\frac{3M}{4\pi}\frac{a^2}{(r^2+a^2)^{5/2}}
+  \label{eq:plum-dp}
+\end{equation}
+
+\begin{enumerate}[label=(\alph*)]
+\item\underline{Show that the associated gravitational potential is $\phi(r)=\frac{GM}{\sqrt{r^2+a^2}}$.}
+\end{enumerate}
+
+The Poisson equation is $\Delta\phi=4\pi G\rho$. If the potential is as given substituting it into the above will yield the density profile \eqref{eq:plum-dp}. (Easier than integrating!)\\
+N.B. I have changed the sign of the potential to use the convention $\phi(r)<0\ \forall\ r\neq\infty$.  
+
+The Plummer density profile is spherically symmetric, so in spherical coordinates:
+\begin{align}
+  \Delta\phi&=\frac{1}{r^2}\frac{\mathrm{d}}{\mathrm{d}r}\left(r^2 \frac{\mathrm{d}\phi}{\mathrm{d}r}\right)\\
+  &=\frac{1}{r^2}\left(2r\frac{\mathrm{d}\phi}{\mathrm{d}r}+r^2\frac{\mathrm{d}^2\phi}{\mathrm{d}r^2}\right)
+\end{align}
+
+We have:
+\begin{align}
+  \frac{\mathrm{d}\phi}{\mathrm{d}r}&=GM\frac{r}{\left(r^2+a^2\right)^{3/2}}\\
+  \mbox{and }\frac{\mathrm{d}^2\phi}{\mathrm{d}r^2}&=GM\frac{a^2-2r^2}{\left(r^2+a^2\right)^{5/2}}
+\end{align}
+
+Hence:
+\begin{align}
+  \Delta\phi&=\frac{1}{r^2}\left[GMr^2\frac{1}{\left(r^2+a^2\right)^{3/2}}+2GMr^2\frac{a^2-2r^2}{\left(r^2+a^2\right)^{5/2}}\right]\\
+            &=\frac{3GMa^2}{\left(r^2+a^2\right)^{5/2}}\\
+  \Rightarrow\frac{\Delta\phi}{4\pi G}&=\frac{3M}{4\pi}\frac{a^2}{\left(r^2+a^2\right)^{5/2}}\\
+            &=\rho(r)\\
+  &\QED\nonumber
+\end{align}
+
+\begin{enumerate}[resume, label=(\alph*)]
+\item\underline{Hence show the desnity and potential imply the ratio $\rho\propto\phi^5$.}
+\end{enumerate}
+
+We have $\rho\propto r^{-5/2}$ and $\phi\propto r^{-1/2}$. Hence $\rho\propto\phi^5$.
+
+\begin{enumerate}[resume, label=(\alph*)]
+\item\underline{Use this to show that the Plummer model has a distribution function $f(E)\propto(-E)^{7/2}$.}
+\end{enumerate}
+
+The ``Jeans problem'' involves solving
+\begin{align}
+  f(E)&=-\frac{1}{2\sqrt{2}\pi^2}\frac{\mathrm{d}}{\mathrm{d}E}\int_0^E\frac{\mathrm{d}\rho}{\mathrm{d}\phi}\frac{\mathrm{d}\phi}{\sqrt{\phi-E}}
+        \intertext{Neglecting numerical factors, and changing variables to $\varepsilon=-E$ and $\Psi=-\phi$ such that $\left[\varepsilon,\ \Psi\right]>0$ always:}
+        f(\varepsilon)&\propto\frac{\mathrm{d}}{\mathrm{d}\varepsilon}\int_0^\varepsilon\frac{\mathrm{d}\rho}{\mathrm{d}\Psi}\frac{\mathrm{d}\Psi}{\sqrt{\varepsilon-\Psi}}\\
+  \intertext{Integrating by parts, with $u=\frac{\mathrm{d}\rho}{\mathrm{d}\Psi}$ and $\mathrm{d}v=\left(\varepsilon-\Psi\right)^{1/2}$:}
+  f(\varepsilon)&\propto\frac{\mathrm{d}}{\mathrm{d}\varepsilon}\left[\left.-2\frac{\mathrm{d}\rho}{\mathrm{d}\Psi}\sqrt{\varepsilon-\Psi}\;\right|^\varepsilon_0+2\int_0^\varepsilon\sqrt{\varepsilon-\Psi}\frac{\mathrm{d}^2\rho}{\mathrm{d}\Psi^2\mathrm{d}\Psi}\right]\\
+      &\propto\left.\frac{1}{\sqrt{\varepsilon}}\frac{\mathrm{d}\rho}{\mathrm{d}\Psi}\right|_{\Psi=0}+\int_0^\varepsilon\frac{\mathrm{d}^2\rho}{\mathrm{d}\Psi^2}\frac{\mathrm{d}\Psi}{\sqrt{\varepsilon-\Psi}}
+        \intertext{Since $\rho\propto\phi^5$, $\frac{\mathrm{d}\rho}{\mathrm{d}\Psi}\propto\Psi^4$ and $\frac{\mathrm{d}^2\rho}{\mathrm{d}\Psi^2}\propto\Psi^3$.}
+        \Rightarrow f(\varepsilon)&\propto\frac{1}{\sqrt{\varepsilon}}\left.(\Psi^4)\right|_{\Psi=0}+\int_0^\varepsilon\frac{\Psi^3\,\mathrm{d}\Psi}{\sqrt{\varepsilon-\Psi}}\\
+  \intertext{The first term vanishes; substituting $x=\varepsilon-\Psi$ to perform the integral in the second term:}
+  f(\varepsilon)&\propto-\int_{x=\varepsilon}^{x=0}\frac{\left(\varepsilon-x\right)^3}{\sqrt{x}}\,\mathrm{d}x\\
+      &\propto-\int_\varepsilon^0\varepsilon^3x^{-1/2}-3\varepsilon^2x^{1/2}+3\varepsilon x^{3/2}-x^{5/2}\,\mathrm{d}x\\
+      &\propto-\left[2\varepsilon^3x^{1/2}-2\varepsilon^2x^{3/2}+\frac{6}{5}\varepsilon x^{5/2}-\frac{2}{7}x^{7/2}\right]^0_\varepsilon\\
+      &\propto 2\varepsilon^{7/2}+2\varepsilon^{7/2}+\frac{6}{5}\varepsilon^{7/2}-\frac{2}{7}\varepsilon^{7/2}\\
+      &\propto\varepsilon^{7/2}\\
+  \Rightarrow f(E)&\propto(-E)^{7/2}\\
+  &\QED\nonumber
+\end{align}
+\end{document}
